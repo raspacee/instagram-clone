@@ -6,6 +6,10 @@ const postSchema = new Schema({
     type: String,
     required: true,
   },
+  authorUsername: {
+    type: String,
+    required: true,
+  },
   imgData: {
     type: String,
     required: true,

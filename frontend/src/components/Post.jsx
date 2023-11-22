@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function Post() {
+export default function Post({ username, text, imgData }) {
   return (
     <div className="border border-gray-300 max-w-sm shadow-xl mt-4">
       <div className="border-b border-gray-400 w-auto py-2 px-3 flex flex-row">
@@ -9,14 +9,11 @@ export default function Post() {
           src="https://a.ltrbxd.com/resized/avatar/upload/1/0/6/5/4/0/8/3/shard/avtr-0-1000-0-1000-crop.jpg?v=97c7493d8e"
         />
         <Link to="/profile/bijay">
-          <span className="font-medium ml-3 cursor-pointer">Ryanhugo</span>
+          <span className="font-medium ml-3 cursor-pointer">{username}</span>
         </Link>
       </div>
       <div>
-        <img
-          className="w-full"
-          src="https://images.pexels.com/photos/7672252/pexels-photo-7672252.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-        />
+        <img src={imgData} />
       </div>
       <div className="footer py-3 px-4">
         <div className="flex flex-row gap-3">
@@ -70,10 +67,8 @@ export default function Post() {
           </span>
         </div>
         <div className="mt-2">
-          <span className="font-medium">Ryanhugo</span>
-          <span className="ml-2 font-normal text-sm text-gray-600">
-            Space travel is amazing
-          </span>
+          <span className="font-medium">{username}</span>
+          <span className="ml-2 font-normal text-sm text-gray-600">{text}</span>
         </div>
       </div>
     </div>
