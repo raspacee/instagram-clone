@@ -15,6 +15,7 @@ import Login from "./routes/login.jsx";
 import Signup from "./routes/signup.jsx";
 import Explore from "./routes/explore.jsx";
 import CreatePost from "./routes/create.jsx";
+import PostDetail from "./routes/postDetail.jsx";
 
 function isAuthenticated() {
   const cookies = new Cookies(import.meta.env.VITE_COOKIES_NAME, { path: "/" });
@@ -82,6 +83,11 @@ const router = createBrowserRouter([
   {
     path: "/create",
     element: <CreatePost />,
+    loader: protectedLoader,
+  },
+  {
+    path: "/post/:postID",
+    element: <PostDetail />,
     loader: protectedLoader,
   },
 ]);

@@ -43,6 +43,7 @@ export default function Root() {
               imgData={p.imgData}
               text={p.text}
               username={p.authorUsername}
+              _id={p._id}
             />
           ))}
       </div>

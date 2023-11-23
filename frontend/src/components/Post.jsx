@@ -1,6 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-export default function Post({ username, text, imgData }) {
+export default function Post({ _id, username, text, imgData }) {
+  const navigate = useNavigate();
+
   return (
     <div className="border border-gray-300 max-w-sm shadow-xl mt-4">
       <div className="border-b border-gray-400 w-auto py-2 px-3 flex flex-row">
@@ -13,7 +15,11 @@ export default function Post({ username, text, imgData }) {
         </Link>
       </div>
       <div>
-        <img src={imgData} />
+        <img
+          src={imgData}
+          className="cursor-pointer"
+          onClick={() => navigate("/post/" + _id)}
+        />
       </div>
       <div className="footer py-3 px-4">
         <div className="flex flex-row gap-3">

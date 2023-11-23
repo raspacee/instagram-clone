@@ -21,37 +21,34 @@ const deleteFile = (filepath) => {
 router.get("/", authenticator, async function (req, res, next) {
   const user = await User.findOne({ _id: res.locals.user._id }, "following");
   let posts = [];
+  let targets = new Set();
   if (user.following.length == 0) {
     return res.status(204).send({ message: "Follow some people to see posts" });
   } else if (user.following.length < 3) {
-    const t = user.following[Math.floor(Math.random() * user.following.length)];
-    const target = await User.findOne({ _id: t.userID }, "posts");
-    for (let i = 0; i < target.posts.length; i++) {
-      const p = await Post.findOne({ _id: target.posts[i].postID });
-      posts.push(p);
-    }
-    // Shuffle the posts array
-    posts.sort(() => Math.random() - 0.5);
-    return res.status(200).send({ posts });
+    const t =
+      user.following[Math.floor(Math.random() * user.following.length)].userID;
+    targets.add(t);
   } else {
-    let targets = new Set();
     while (targets.size < 3) {
       const t =
         user.following[Math.floor(Math.random() * user.following.length)]
           .userID;
       targets.add(t);
     }
-    targets.forEach(async (userID) => {
-      const t = await User.findOne({ _id: userID }, "posts");
-      for (let i = 0; i < t.posts.length; i++) {
-        const p = await Post.findOne({ _id: t.posts[i].postID });
-        posts.push(p);
-      }
-      // Shuffle the posts array
-      posts.sort(() => Math.random() - 0.5);
-      return res.status(200).send({ posts });
-    });
   }
+  targets.forEach(async (userID) => {
+    const t = await User.findOne({ _id: userID }, "posts");
+    for (let i = 0; i < t.posts.length; i++) {
+      const p = await Post.findOne(
+        { _id: t.posts[i].postID },
+        "_id imgData authorUsername text"
+      );
+      posts.push(p);
+    }
+    // Shuffle the posts array
+    posts.sort(() => Math.random() - 0.5);
+    return res.status(200).send({ posts });
+  });
 });
 
 /* POST create post */
