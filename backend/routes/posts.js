@@ -3,6 +3,7 @@ const router = express.Router();
 const upload = require("../multer");
 const Post = require("../schemas/Post");
 const User = require("../schemas/User");
+const Comment = require("../schemas/Comment");
 const createError = require("http-errors");
 const fs = require("fs");
 const authenticator = require("../middlewares/auth.js");
@@ -16,6 +17,21 @@ const deleteFile = (filepath) => {
     }
   });
 };
+
+/* GET all info of a post */
+router.get("/:postID", authenticator, async function (req, res, next) {
+  try {
+    const post = await Post.findOne({ _id: req.params.postID });
+    let comments = [];
+    for (let i = 0; i < post.comments.length; i++) {
+      const c = await Comment.findOne({ _id: post.comments[i].commentID });
+      comments.push(c);
+    }
+    return res.status(200).send({ post, comments });
+  } catch (err) {
+    next(createError(err));
+  }
+});
 
 /* GET home page posts */
 router.get("/", authenticator, async function (req, res, next) {

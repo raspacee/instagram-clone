@@ -10,6 +10,7 @@ const cors = require("cors");
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const postsRouter = require("./routes/posts");
+const commentsRouter = require("./routes/comments");
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(cookieParser());
 app.use("/", indexRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/posts", postsRouter);
+app.use("/api/comments", commentsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

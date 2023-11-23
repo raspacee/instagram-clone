@@ -31,18 +31,9 @@ const postSchema = new Schema({
   ],
   comments: [
     {
-      userID: {
+      commentID: {
         type: String,
         required: true,
-      },
-      username: {
-        type: String,
-        required: true,
-      },
-      comment: {
-        type: String,
-        required: true,
-        maxLength: 200,
       },
     },
   ],
