@@ -115,4 +115,58 @@ router.get("/by/:userID", authenticator, async function (req, res, next) {
   return res.status(200);
 });
 
+/* POST like a post */
+router.post("/like/:postID", authenticator, async function (req, res, next) {
+  try {
+    const target = await Post.findOne({ _id: req.params.postID }, "_id likes");
+    if (!target) {
+      return res.status(200).send({ message: "Post not found" });
+    } else {
+      // Checking if the post is already liked
+      if (
+        target.likes.filter((f) => f.userID == res.locals.user._id).length == 1
+      ) {
+        return res.status(200).send({ message: "Post already liked" });
+      } else {
+        const user = await User.findByIdAndUpdate(res.locals.user._id, {
+          $push: { likes: { postID: target._id } },
+        });
+        const post = await Post.findByIdAndUpdate(req.params.postID, {
+          $push: { likes: { userID: res.locals.user._id } },
+        });
+        return res.status(200).send({ message: "Successfully liked" });
+      }
+    }
+  } catch (err) {
+    next(createError(err));
+  }
+});
+
+/* POST unlike a post */
+router.post("/unlike/:postID", authenticator, async function (req, res, next) {
+  try {
+    const target = await Post.findOne({ _id: req.params.postID }, "likes _id");
+    if (!target) {
+      return res.status(200).send({ message: "Post not found" });
+    } else {
+      // Checking if the post is not liked
+      if (
+        target.likes.filter((f) => f.userID == res.locals.user._id).length == 0
+      ) {
+        return res.status(200).send({ message: "Post is not liked" });
+      } else {
+        const user = await User.findByIdAndUpdate(res.locals.user._id, {
+          $pull: { likes: { postID: target._id } },
+        });
+        const post = await Post.findByIdAndUpdate(req.params.postID, {
+          $pull: { likes: { userID: res.locals.user._id } },
+        });
+        return res.status(200).send({ message: "Successfully unliked" });
+      }
+    }
+  } catch (err) {
+    next(createError(err));
+  }
+});
+
 module.exports = router;
