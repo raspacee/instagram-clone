@@ -57,7 +57,7 @@ router.get("/", authenticator, async function (req, res, next) {
     for (let i = 0; i < t.posts.length; i++) {
       const p = await Post.findOne(
         { _id: t.posts[i].postID },
-        "_id imgData authorUsername text"
+        "_id imgData authorUsername text likes"
       );
       posts.push(p);
     }

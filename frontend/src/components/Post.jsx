@@ -1,7 +1,33 @@
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { getCookie } from "../api/cookie";
+import { fetchRequest } from "../api/fetchRequest";
 
-export default function Post({ _id, username, text, imgData }) {
+export default function Post({ _id, username, text, imgData, likes }) {
+  const [isLiked, setIsLiked] = useState(false);
   const navigate = useNavigate();
+  const userID = getCookie("_id");
+
+  const handleLike = async () => {
+    if (isLiked) {
+      const response = await fetchRequest("posts/unlike/" + _id, true, "POST");
+      if (response.status == 200) {
+        const d = await response.json();
+        setIsLiked(false);
+      }
+    } else {
+      const response = await fetchRequest("posts/like/" + _id, true, "POST");
+      if (response.status == 200) {
+        setIsLiked(true);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (likes.find((l) => l.userID == userID)) {
+      setIsLiked(true);
+    }
+  }, []);
 
   return (
     <div className="border border-gray-300 max-w-sm shadow-xl mt-4">
@@ -23,14 +49,14 @@ export default function Post({ _id, username, text, imgData }) {
       </div>
       <div className="footer py-3 px-4">
         <div className="flex flex-row gap-3">
-          <span>
+          <span onClick={handleLike} className="cursor-pointer">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6"
+              className={`w-6 h-6 ${isLiked ? "fill-red-500" : ""}`}
             >
               <path
                 strokeLinecap="round"

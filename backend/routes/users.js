@@ -183,7 +183,7 @@ router.post("/login", function (req, res, next) {
           { username: user.username, email: user.email, _id: user._id },
           process.env.JWT_SECRET,
           {
-            expiresIn: 60 * 60 * 60,
+            expiresIn: "7w",
           }
         );
         return res
