@@ -1,6 +1,7 @@
 import { fetchRequest } from "../api/fetchRequest";
 import Sidebar from "../components/Sidebar";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 export default function Explore() {
   const [showSearch, setShowSearch] = useState(false);
@@ -57,9 +58,11 @@ export default function Explore() {
               {searchResults.length > 0 ? (
                 searchResults.map((s) => {
                   return (
-                    <div className="border p-2" key={s.email}>
-                      {s.username}
-                    </div>
+                    <Link to={`/profile/${s.username}`}>
+                      <div className="border p-2 cursor-pointer" key={s.email}>
+                        {s.username}
+                      </div>
+                    </Link>
                   );
                 })
               ) : (

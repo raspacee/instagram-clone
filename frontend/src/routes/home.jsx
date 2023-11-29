@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import Post from "../components/Post";
 import Sidebar from "../components/Sidebar";
-import ProfileSuggestionLink from "../components/ProfileSuggestionLink";
 import { fetchRequest } from "../api/fetchRequest";
+import ProfileSuggestions from "../components/ProfileSuggestions";
 
 export default function Root() {
   const [posts, setPosts] = useState([]);
@@ -48,13 +48,7 @@ export default function Root() {
             />
           ))}
       </div>
-      <div className="col-span-2 p-3 px-5">
-        <span className="font-normal text-gray-500 mb-6">
-          Suggestions for you
-        </span>
-        <ProfileSuggestionLink />
-        <ProfileSuggestionLink />
-      </div>
+      <ProfileSuggestions />
     </div>
   );
 }

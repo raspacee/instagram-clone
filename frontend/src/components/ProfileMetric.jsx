@@ -20,7 +20,13 @@ export default function ProfileMetric({
           <span className="ml-1">following</span>
         </span>
       </div>
-      <div className="bio mt-8">{bio}</div>
+      <div className="bio mt-8">
+        {bio != "" ? (
+          bio
+        ) : (
+          <span className="font-medium text-gray-600">Empty bio</span>
+        )}
+      </div>
     </>
   );
 }
